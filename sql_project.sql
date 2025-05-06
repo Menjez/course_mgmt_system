@@ -1,11 +1,8 @@
--- Active: 1746348621633@@pg-57b975c-test-98a4.i.aivencloud.com@10933@course_management
-
 --Queries
-
 --Students who enrolled in at least one course
 SELECT DISTINCT s.student_id, first_name, last_name, COUNT(e.course_id) AS courses_taken
 FROM public.students s
-JOIN public.enrollments e on s.student_id = e.student_id
+INNER JOIN public.enrollments e on s.student_id = e.student_id
 GROUP BY s.student_id, first_name, last_name
 HAVING COUNT(e.course_id) >= 1
 ORDER BY courses_taken DESC;
@@ -13,7 +10,7 @@ ORDER BY courses_taken DESC;
 --Students enrolled in more than two courses
 SELECT s.student_id, first_name, last_name,  COUNT(e.course_id) AS courses_taken
 FROM public.students s
-JOIN public.enrollments e ON s.student_id = e.student_id
+INNER JOIN public.enrollments e ON s.student_id = e.student_id
 GROUP BY s.student_id, s.first_name, s.last_name
 HAVING COUNT(e.course_id) > 2
 ORDER BY courses_taken DESC;
@@ -40,9 +37,9 @@ WITH grade_values AS (
     FROM public.enrollments
     WHERE grade IS NOT NULL
 )
-SELECT c.course_id, c.course_name, AVG(grade_values.numeric_grade) AS average_grade
+SELECT c.course_id, c.course_name, round(AVG(grade_values.numeric_grade),2) AS average_grade
 FROM public.courses c
-LEFT JOIN grade_values ON c.course_id = grade_values.course_id
+JOIN grade_values ON c.course_id = grade_values.course_id
 GROUP BY c.course_id, c.course_name
 ORDER BY average_grade DESC;
 
@@ -67,7 +64,7 @@ WITH student_grades AS (
     END AS numeric_grade
     FROM public.enrollments
 )
-SELECT s.student_id, first_name, last_name, AVG(student_grades.numeric_grade) AS average_grade
+SELECT s.student_id, first_name, last_name, round(AVG(student_grades.numeric_grade), 2) AS average_grade
 FROM public.students s
 LEFT JOIN student_grades ON s.student_id = student_grades.student_id
 GROUP BY s.student_id, first_name, last_name
@@ -80,11 +77,11 @@ LEFT JOIN public.courses c ON i.instructor_id = c.instructor_id
 GROUP BY i.instructor_id, first_name, last_name;
 
 --Students enrolled in a course taught by specific instructor
-SELECT DISTINCT s.student_id, s.first_name, s.last_name, course_name
+SELECT  s.student_id, s.first_name, s.last_name, course_name
 FROM public.students s
-JOIN public.enrollments e ON s.student_id = e.student_id
-JOIN public.courses c ON e.course_id = c.course_id
-FULL OUTER JOIN public.instructors i ON c.instructor_id = i.instructor_id
+INNER JOIN public.enrollments e ON s.student_id = e.student_id
+INNER JOIN public.courses c ON e.course_id = c.course_id
+INNER JOIN public.instructors i ON c.instructor_id = i.instructor_id
 WHERE i.first_name = 'Barasa' AND i.last_name = 'Makokha';
 
 --Top 3 students by average grade
@@ -98,7 +95,7 @@ SELECT s.student_id, first_name, last_name, round(avg(
         ELSE NULL
     END),2) AS average_grade
 FROM public.students s
-JOIN public.enrollments e ON s.student_id = e.student_id
+INNER JOIN public.enrollments e ON s.student_id = e.student_id
 GROUP BY s.student_id, first_name, last_name
 ORDER BY average_grade DESC
 LIMIT 3;
@@ -106,11 +103,12 @@ LIMIT 3;
 --Students failing (grade = ‘F’) in more than one course
 SELECT s.student_id, first_name, last_name, COUNT(grade) AS no_of_failed_courses
 FROM public.students s
-JOIN public.enrollments e on s.student_id = e.student_id
+INNER JOIN public.enrollments e on s.student_id = e.student_id
 WHERE grade = 'E'
 GROUP BY s.student_id, first_name, last_name
 HAVING COUNT(grade) > 1
 ORDER BY no_of_failed_courses DESC;
+
 
 
 --Advanced SQL
