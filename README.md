@@ -30,6 +30,9 @@ You’ll need a tool to connect to and interact with the database. You can choos
 - **Courses**: Each course is taught by an instructor.
 - **Enrollments**: Links students and courses, with enrollment date and grade.
 
+### ERD Diagram
+<img src="images/erd.jpg" width="500" height="500">
+
 ### 📌 Key SQL Queries Explained
 
 | Query | Description |
@@ -40,6 +43,13 @@ You’ll need a tool to connect to and interact with the database. You can choos
 |Student Averages | Compute each student’s average grade.
 |Instructor Load | Count how many courses each instructor teaches.
 |Top Performers | Top 3 students based on average grade.
+
+### Sample output
+#### The image shows the creation and output of a view
+<img src="images/view.jpg" width="800" height="600">
+
+#### The image shows the creation and execution of a trigger 
+<img src="images/trigger.jpg" width="800" height="600">
 
 ## ▶️ How to Run
 
