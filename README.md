@@ -55,7 +55,7 @@ You’ll need a tool to connect to and interact with the database. You can choos
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/course-management-system.git
+   git clone https://github.com/Menjez/course_mgmt_system
 
 2. Open the project in VS Code or DBeaver and connect to the postgreSQL instance
 3. Run the sql scripts
